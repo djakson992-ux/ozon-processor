@@ -135,17 +135,6 @@ function App() {
 
     setIsProcessing(true);
     setError(null);
-  }, [nacisleniyaFile, priceRef]);
-
-  // Handle file processing body
-  const doProcessFiles = useCallback(async () => {
-    if (!nacisleniyaFile) {
-      setError('Пожалуйста, загрузите файл начислений Ozon');
-      return;
-    }
-
-    setIsProcessing(true);
-    setError(null);
 
     try {
       // 1. Парсим начисления
@@ -304,7 +293,7 @@ function App() {
             </div>
 
             <button
-              onClick={doProcessFiles}
+              onClick={processFiles}
               disabled={!nacisleniyaFile || isProcessing}
               className="py-2.5 px-6 rounded-xl font-semibold text-sm text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500 disabled:bg-slate-300 dark:disabled:bg-slate-800 dark:disabled:text-slate-600 disabled:cursor-not-allowed shadow-sm shadow-indigo-200 dark:shadow-none transition-all flex items-center justify-center gap-2 active:scale-95 shrink-0"
             >
