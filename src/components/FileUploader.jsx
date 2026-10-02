@@ -54,10 +54,10 @@ export default function FileUploader({
       onDrop={handleDrop}
       className={`relative group rounded-2xl border-2 transition-all duration-200 p-5 ${
         isDragging
-          ? 'border-indigo-500 bg-indigo-50/60 shadow-lg scale-[1.01]'
+          ? 'border-indigo-500 dark:border-indigo-400 bg-indigo-50/60 dark:bg-indigo-950/40 shadow-lg scale-[1.01]'
           : isLoaded
-          ? 'border-emerald-200 bg-emerald-50/40 shadow-sm hover:border-emerald-300'
-          : 'border-dashed border-slate-300 bg-white hover:border-indigo-400 hover:bg-slate-50/80 shadow-sm'
+          ? 'border-emerald-200 dark:border-emerald-800/60 bg-emerald-50/40 dark:bg-emerald-950/20 shadow-sm hover:border-emerald-300 dark:hover:border-emerald-700'
+          : 'border-dashed border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900/60 hover:border-indigo-400 dark:hover:border-indigo-500 hover:bg-slate-50/80 dark:hover:bg-slate-800/50 shadow-sm'
       }`}
     >
       <input
@@ -73,8 +73,8 @@ export default function FileUploader({
           <div
             className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
               isLoaded
-                ? 'bg-emerald-100 text-emerald-700'
-                : 'bg-indigo-50 text-indigo-600 group-hover:bg-indigo-100'
+                ? 'bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400'
+                : 'bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-900/60'
             }`}
           >
             {isLoaded ? (
@@ -86,14 +86,14 @@ export default function FileUploader({
 
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-base font-semibold text-slate-900">{title}</h3>
+              <h3 className="text-base font-semibold text-slate-900 dark:text-white">{title}</h3>
               {badgeText && (
-                <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-slate-100 text-slate-600">
+                <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-transparent dark:border-slate-700">
                   {badgeText}
                 </span>
               )}
             </div>
-            <p className="text-xs text-slate-500 mt-0.5">{subtitle}</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{subtitle}</p>
           </div>
         </div>
 
@@ -105,7 +105,7 @@ export default function FileUploader({
               onClear();
             }}
             title="Очистить файл"
-            className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+            className="p-1.5 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors"
           >
             <Trash2 className="w-4 h-4" />
           </button>
@@ -113,29 +113,29 @@ export default function FileUploader({
       </div>
 
       {isLoaded ? (
-        <div className="mt-4 pt-3.5 border-t border-emerald-100/80 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-xs font-medium text-emerald-800 truncate">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+        <div className="mt-4 pt-3.5 border-t border-emerald-100/80 dark:border-emerald-900/40 flex items-center justify-between">
+          <div className="flex items-center gap-2 text-xs font-medium text-emerald-800 dark:text-emerald-300 truncate">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
             <span className="truncate max-w-[200px] sm:max-w-xs">{fileName || 'Загружено из памяти'}</span>
             {extraInfo && (
-              <span className="text-emerald-700/80 font-normal">({extraInfo})</span>
+              <span className="text-emerald-700/80 dark:text-emerald-400/80 font-normal">({extraInfo})</span>
             )}
           </div>
 
           <label
             htmlFor={`file-input-${title}`}
-            className="cursor-pointer inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-800 px-2.5 py-1 rounded-lg hover:bg-indigo-50/80 transition-colors"
+            className="cursor-pointer inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 px-2.5 py-1 rounded-lg hover:bg-indigo-50/80 dark:hover:bg-indigo-950/50 transition-colors"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             Заменить
           </label>
         </div>
       ) : (
-        <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-between">
-          <span className="text-xs text-slate-400">Перетащите .xlsx файл сюда</span>
+        <div className="mt-4 pt-3.5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+          <span className="text-xs text-slate-400 dark:text-slate-500">Перетащите .xlsx файл сюда</span>
           <label
             htmlFor={`file-input-${title}`}
-            className="cursor-pointer inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-1.5 rounded-lg shadow-sm transition-all active:scale-95"
+            className="cursor-pointer inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500 px-3 py-1.5 rounded-lg shadow-sm transition-all active:scale-95"
           >
             Выбрать файл
           </label>
