@@ -1,0 +1,9 @@
+services:
+  ozon-processor:
+    container_name: ozon-processor
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3080:80"

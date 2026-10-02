@@ -1,0 +1,10 @@
+node_modules
+dist
+.git
+.agents
+*.md
+test.js
+analyze*
+инфа по серверу
+*.txt
+*.log

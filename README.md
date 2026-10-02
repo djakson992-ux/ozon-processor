@@ -1,2 +1,15 @@
-# ozon-processor
-Web application for Ozon accruals reports processing and financial analysis
+# Ozon Analytics — Обработчик отчётов
+
+Веб-приложение для финансового анализа и сведения отчётов по начислениям Ozon.
+
+## Возможности
+- Загрузка файла начислений Ozon (.xlsx)
+- Справочник цен и расчет РРЦ
+- Сводный дашборд Bento Grid
+- Интерактивная таблица с поиском, фильтрами по зонам (A/B/C) и пагинацией
+- Экспорт результатов в Excel (.xlsx)
+
+## Деплой через Docker
+```bash
+docker compose up -d --build
+```
