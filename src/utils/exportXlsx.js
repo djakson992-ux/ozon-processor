@@ -7,7 +7,7 @@ export function sanitizeCellValue(val) {
   if (val === null || val === undefined) return '';
   if (typeof val === 'number') return val;
   const str = String(val).trim();
-  if (/^[=+\\-@\\t\\r]/.test(str)) {
+  if (/^[-=+@\t\r]/.test(str)) {
     return `'${str}`;
   }
   return str;
@@ -19,8 +19,10 @@ export function sanitizeCellValue(val) {
 export function exportToXlsx(zoneA, zoneB, zoneC, columns, totals, priceRef, additionalRows = []) {
   const wb = XLSX.utils.book_new();
 
+  // Создаём данные для основного листа
   const data = [];
 
+  // Заголовок строки 1: группы услуг (объединённые ячейки)
   const headerRow1 = ['ID начисления', 'Артикул'];
   const groupSpans = [];
   let currentGroup = null;
@@ -40,13 +42,15 @@ export function exportToXlsx(zoneA, zoneB, zoneC, columns, totals, priceRef, add
     groupSpans.push({ group: currentGroup, start: spanStart, end: headerRow1.length - 1 });
   }
 
+  // Фиксированные столбцы
   const fixedCols = ['Количество (#)', 'Сумма на РС', 'root_price', 'РРЦ', 'РРЦ × Кол-во', '% на РС от РРЦ', '% затрат от РРЦ'];
   const fullHeaderRow = headerRow1.concat(fixedCols);
   data.push(fullHeaderRow);
 
   const totalColsCount = fullHeaderRow.length;
-  const sumOnRsColIndex = 2 + columns.length + 1;
+  const sumOnRsColIndex = 2 + columns.length + 1; // Индекс колонки 'Сумма на РС'
 
+  // Заголовок строки 2: типы начислений
   const headerRow2 = ['', ''];
   for (const col of columns) {
     headerRow2.push(col.type);
@@ -56,16 +60,19 @@ export function exportToXlsx(zoneA, zoneB, zoneC, columns, totals, priceRef, add
   }
   data.push(headerRow2);
 
+  // Зона A
   for (const row of zoneA) {
     const dataRow = buildDataRow(row, columns);
     data.push(dataRow);
   }
 
+  // Зона B
   for (const row of zoneB) {
     const dataRow = buildDataRow(row, columns);
     data.push(dataRow);
   }
 
+  // Дополнительные строки
   if (additionalRows && additionalRows.length > 0) {
     const sectionHeader = new Array(totalColsCount).fill('');
     sectionHeader[0] = 'ДОПОЛНИТЕЛЬНЫЕ ЗАТРАТЫ';
@@ -79,8 +86,10 @@ export function exportToXlsx(zoneA, zoneB, zoneC, columns, totals, priceRef, add
     }
   }
 
+  // Пустая строка перед зоной C
   data.push(new Array(totalColsCount).fill(''));
 
+  // Зона C - итоги по типам без ID и артикула
   if (zoneC && zoneC.length > 0) {
     const sectionHeaderC = new Array(totalColsCount).fill('');
     sectionHeaderC[0] = 'НАЧИСЛЕНИЯ БЕЗ ID И АРТИКУЛА';
@@ -94,6 +103,7 @@ export function exportToXlsx(zoneA, zoneB, zoneC, columns, totals, priceRef, add
     }
   }
 
+  // Итоговая строка
   const totalRow = new Array(totalColsCount).fill('');
   totalRow[0] = 'ИТОГО';
   totalRow[sumOnRsColIndex] = totals.totalToList;
@@ -101,6 +111,7 @@ export function exportToXlsx(zoneA, zoneB, zoneC, columns, totals, priceRef, add
 
   const ws = XLSX.utils.aoa_to_sheet(data);
 
+  // Применяем слияния для заголовков
   ws['!merges'] = [];
   for (const span of groupSpans) {
     if (span.end > span.start) {
@@ -113,6 +124,7 @@ export function exportToXlsx(zoneA, zoneB, zoneC, columns, totals, priceRef, add
 
   XLSX.utils.book_append_sheet(wb, ws, 'Обработанные данные');
 
+  // Лист с итогами
   const summaryData = [
     ['Показатель', 'Значение'],
     ['К перечислению на РС', totals.totalToList],
@@ -134,6 +146,7 @@ export function exportToXlsx(zoneA, zoneB, zoneC, columns, totals, priceRef, add
   const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
   XLSX.utils.book_append_sheet(wb, wsSummary, 'Итоги');
 
+  // Генерируем файл
   XLSX.writeFile(wb, 'Ozon_Обработка.xlsx');
 }
 
